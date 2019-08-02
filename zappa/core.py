@@ -8,6 +8,7 @@ Zappa core library. You may also want to look at `cli.py` and `util.py`.
 
 from __future__ import print_function
 
+import datetime
 import getpass
 import glob
 import hashlib
@@ -714,6 +715,8 @@ class Zappa(object):
                     # Actually put the file into the proper place in the zip
                     # Related: https://github.com/Miserlou/Zappa/pull/716
                     zipi = zipfile.ZipInfo(os.path.join(root.replace(temp_project_path, '').lstrip(os.sep), filename))
+                    now = datetime.datetime.utcnow()
+                    zipi.date_time = [now.year, now.month, now.day, now.hour, now.minute, now.second]
                     zipi.create_system = 3
                     zipi.external_attr = 0o755 << int(16) # Is this P2/P3 functional?
                     with open(os.path.join(root, filename), 'rb') as f:
